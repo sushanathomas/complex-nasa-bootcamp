@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/nasa-complex.css">
+    <title>Complex NASA Bootcamp API</title>
+</head>
+<body>
+    <main>
+        <h1>Complex NASA API</h1>
+        <label for="weatherKey">WeatherAPI key</label>
+        <input id="weatherKey" type="password" placeholder="Enter your WeatherAPI key">
+        <button type="button">Find Them</button>
+        <label for="limit">Number of facilities</label>
+        <select id="limit">
+            <option value="10">10</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+            <option value="70">70</option>
+            <option value="485">ALL</option>
+        </select>
+        <p id="status" role="status">Enter your key and click Find Them.</p>
+        <table>
+            <thead><tr><th scope="col">Facilities</th><th scope="col">Location</th><th scope="col">Weather</th></tr></thead>
+            <tbody></tbody>
+        </table>
+    </main>
+    <script src="JS/nasa-complex.js"></script>
+</body>
+</html>
