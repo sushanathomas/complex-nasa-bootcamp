@@ -1,33 +1,74 @@
-# 🚀 Project: Complex NASA API
+# NASA Facilities and Weather Explorer
 
-### Goal: Use NASA's API to return all of their facility locations (~400). Display the name of the facility, its location, and the weather at the facility currently. 
+A web application that combines NASA facility data with current
+weather information for each facility’s city.
 
-### How to submit your code for review:
+<img width="822" height="292" alt="Complex Nasa API" src="https://github.com/user-attachments/assets/2a60e428-9a63-49a3-8cff-0083b16d5895" />
 
-- Fork and clone this repo
-- Create a new branch called answer
-- Checkout answer branch
-- Push to your fork
-- Issue a pull request
-- Your pull request description should contain the following:
-  - (1 to 5 no 3) I completed the challenge
-  - (1 to 5 no 3) I feel good about my code
-  - Anything specific on which you want feedback!
+## Features
 
-Example:
-```
-I completed the challenge: 5
-I feel good about my code: 4
-I'm not sure if my constructors are setup cleanly...
-```
+- Displays NASA facility names and cities.
+- Looks up the current temperature for each city.
+- Shows temperatures in Fahrenheit.
+- Presents facility and weather information in a table.
+- Includes a dropdown for choosing how many records to request.
 
-## Run this submission
+## Built With
 
-Open index.html with VS Code Live Server. Enter your WeatherAPI key in the page, choose how many facilities to show, and click Find Them. Keys are not saved in the repository.
+- HTML
+- CSS
+- JavaScript
+- Fetch API
+- NASA facility data
+- WeatherAPI
+- A CORS proxy for requesting NASA data
 
-The page tries NASA's official archived JSON download first. If it fails (including browser access restrictions), it uses data/nasa-facilities.json, a copy of 485 official archived records with the fields needed by the app. The page reports when it uses this static fallback. This fallback is not a live NASA API response.
+## How to Run
 
-Source: https://data.nasa.gov/dataset/nasa-facilities
-Download: https://data.nasa.gov/docs/legacy/NASA_Facilities/NASA_Facilities_rows.json
+1. Download or clone this repository.
+2. Open JS/nasa-complex.js and replace the myKey value with
+   your own WeatherAPI key.
+3. Open index.html in your browser.
+4. Choose an option from the dropdown.
+5. Click Find Them to load facility and weather information.
 
-Weather uses the coordinates supplied in NASA's archived records, which may be shared or approximate. Facilities sharing coordinates reuse a request. Weather failures appear in the table. Weather observations are fetched when the button is clicked. A deployed production version should keep the weather key on a backend.
+An internet connection is required. No Node.js server is needed.
+
+## How It Works
+
+The app requests NASA facility data through a CORS proxy and parses
+the response. It creates a table row for each selected facility,
+then sends a separate request to WeatherAPI using the facility’s city.
+
+When the weather response arrives, the app adds the current
+temperature to that facility’s row.
+
+## Project Files
+
+- index.html — page structure, controls, and results table
+- CSS/nasa-complex.css — page styling
+- JS/nasa-complex.js — NASA and weather requests
+- README.md — project documentation
+
+## Current Limitations
+
+- Some dropdown labels do not match their configured record counts.
+- The loop includes one additional record beyond the selected value.
+- Repeated searches append results instead of clearing previous rows.
+- Errors are logged in the browser console.
+- Loading many facilities sends many weather requests.
+- NASA results depend on the availability of the legacy dataset
+  and CORS proxy.
+- The weather API key is visible in the browser-side JavaScript.
+
+## What I Practiced
+
+- Combining data from two APIs.
+- Working with promises and JSON.
+- Creating table rows dynamically.
+- Updating individual rows when asynchronous requests finish.
+- Handling API request errors.
+
+## Author
+
+Sushana Thomas
