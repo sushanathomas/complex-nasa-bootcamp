@@ -1,73 +1,130 @@
 # NASA Facilities and Weather Explorer
 
-A web application that combines NASA facility data with current
-weather information for each facility’s city.
+A web application that displays NASA facilities, their locations, and current weather information.
+
+I built this project to practice combining data from two sources, working with fetch requests, and displaying results in a table.
+
+## Live Application
+
+<!-- Add the new Render Web Service URL after deployment. -->
+
+## Screenshot
 
 <img width="822" height="292" alt="Complex Nasa API" src="https://github.com/user-attachments/assets/2a60e428-9a63-49a3-8cff-0083b16d5895" />
 
 ## Features
 
-- Displays NASA facility names and cities.
-- Looks up the current temperature for each city.
-- Shows temperatures in Fahrenheit.
-- Presents facility and weather information in a table.
-- Includes a dropdown for choosing how many records to request.
+- Choose how many NASA facilities to display.
+- View facility names and locations.
+- View current temperatures in Fahrenheit and weather conditions.
+- Display loading and error messages.
+- Use a saved NASA dataset if the live NASA request fails.
+- Reuse weather requests for facilities at the same coordinates.
+
+Visitors do not need to enter an API key.
 
 ## Built With
 
 - HTML
 - CSS
 - JavaScript
+- Node.js
+- Express
+- dotenv
 - Fetch API
 - NASA facility data
 - WeatherAPI
-- A CORS proxy for requesting NASA data
-
-## How to Run
-
-1. Download or clone this repository.
-2. Open JS/nasa-complex.js and replace the myKey value with
-   your own WeatherAPI key.
-3. Open index.html in your browser.
-4. Choose an option from the dropdown.
-5. Click Find Them to load facility and weather information.
-
-An internet connection is required. No Node.js server is needed.
 
 ## How It Works
 
-The app requests NASA facility data through a CORS proxy and parses
-the response. It creates a table row for each selected facility,
-then sends a separate request to WeatherAPI using the facility’s city.
+1. The browser requests NASA facility data.
+2. If the live NASA request fails, the app loads the saved dataset.
+3. JavaScript creates a table row for each selected facility.
+4. The browser sends each facility’s coordinates to the Express `/api/weather` route.
+5. Express requests weather information from WeatherAPI using a key stored in an environment variable.
+6. The browser displays the temperature and weather condition in the table.
 
-When the weather response arrives, the app adds the current
-temperature to that facility’s row.
+The browser does not receive the WeatherAPI key.
 
-## Project Files
+## Project Structure
 
-- index.html — page structure, controls, and results table
-- CSS/nasa-complex.css — page styling
-- JS/nasa-complex.js — NASA and weather requests
-- README.md — project documentation
+- `index.html` — Page structure, dropdown, button, and results table.
+- `CSS/nasa-complex.css` — Page styling.
+- `JS/nasa-complex.js` — Facility requests, table updates, and weather requests to the server.
+- `data/nasa-facilities.json` — Saved NASA facility data used as a fallback.
+- `server.js` — Serves the website and handles WeatherAPI requests.
+- `package.json` — Lists dependencies and project commands.
+- `.gitignore` — Excludes private settings and installed packages.
+
+## Run Locally
+
+1. Clone the repository and switch to the `answer` branch.
+
+2. Open the project folder and install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Create a `.env` file beside `server.js`:
+
+   ```env
+   WEATHER_API_KEY=your_weatherapi_key
+   ```
+
+4. Start the application:
+
+   ```bash
+   npm start
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000).
+
+Use the Express server rather than Live Server. The weather feature depends on the server’s `/api/weather` route.
+
+## Environment Variables
+
+- `WEATHER_API_KEY` — The private WeatherAPI key.
+- `PORT` — The server port supplied by the host; defaults to 3000 locally.
+
+The `.env`, `config.js`, and `node_modules/` paths are excluded through `.gitignore`.
+
+The application no longer loads the old browser-side `config.js`.
+
+## Deploy on Render
+
+Deploy this version as a **Web Service**, rather than a Static Site.
+
+- **Branch:** `answer`
+- **Build Command:** `npm install`
+- **Start Command:** `npm start`
+- **Environment Variable:** `WEATHER_API_KEY`
+
+Enter the actual key privately in Render’s environment settings. Do not add it to GitHub.
 
 ## Current Limitations
 
-- Some dropdown labels do not match their configured record counts.
-- The loop includes one additional record beyond the selected value.
-- Repeated searches append results instead of clearing previous rows.
-- Errors are logged in the browser console.
-- Loading many facilities sends many weather requests.
-- NASA results depend on the availability of the legacy dataset
-  and CORS proxy.
-- The weather API key is visible in the browser-side JavaScript.
+- Live NASA data may be unavailable or blocked by browser CORS restrictions.
+- The saved NASA dataset may not reflect recent facility changes.
+- Facilities without coordinates cannot receive a weather result.
+- Weather availability depends on WeatherAPI and the account’s request limits.
+- Selecting many facilities can take longer to finish.
 
-## What I Practiced
+## What I Learned
 
-- Combining data from two APIs.
-- Working with promises and JSON.
-- Creating table rows dynamically.
-- Updating individual rows when asynchronous requests finish.
-- Handling API request errors.
+- How to combine facility and weather data.
+- How to use promises and fetch requests.
+- How to create table rows with JavaScript.
+- How to handle failed requests and use fallback data.
+- How to reuse requests for shared locations.
+- How to use Express to keep an API key out of browser code.
+- How Static Sites differ from Web Services.
+
+## Credits
+
+- Based on the `complex-nasa-bootcamp` starter from Resilient Labs.
+- Facility data provided by [NASA](https://data.nasa.gov/).
+- Weather information provided by [WeatherAPI](https://www.weatherapi.com/).
 
 ## Author
 

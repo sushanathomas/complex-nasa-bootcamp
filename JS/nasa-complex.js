@@ -3,15 +3,9 @@ document.querySelector('button').addEventListener('click', nasaClickMe);
 function nasaClickMe() {
     const url = 'https://data.nasa.gov/docs/legacy/NASA_Facilities/NASA_Facilities_rows.json';
     const value = Number(document.querySelector('select').value);
-    const myKey = document.querySelector('#weatherKey').value.trim();
     const button = document.querySelector('button');
     const status = document.querySelector('#status');
     const tableBody = document.querySelector('tbody');
-
-    if (!myKey) {
-        status.innerText = 'Please enter your WeatherAPI key.';
-        return;
-    }
 
     button.disabled = true;
     tableBody.innerHTML = '';
@@ -70,30 +64,38 @@ function nasaClickMe() {
                 const query = `${coordinates[1]},${coordinates[2]}`;
 
                 // Facilities sharing coordinates can share a weather request.
+                // Reuse weather requests for facilities at the same location.
                 if (!weatherRequests[query]) {
-                    weatherRequests[query] = fetch(`https://api.weatherapi.com/v1/current.json?key=${encodeURIComponent(myKey)}&q=${encodeURIComponent(query)}&aqi=no`)
-                        .then(response => response.json().then(weatherData => {
-                            if (!response.ok || weatherData.error) {
-                                throw new Error(weatherData.error ? weatherData.error.message : 'Weather request failed');
+                    weatherRequests[query] = fetch(
+                        `/api/weather?q=${encodeURIComponent(query)}`
+                    )
+                        .then(async response => {
+                            const data = await response.json();
+
+                            if (!response.ok) {
+                                throw new Error(data.error || 'Weather request failed');
                             }
-                            return weatherData;
-                        }));
+
+                            return data;
+                        });
                 }
 
                 const job = weatherRequests[query]
                     .then(weatherData => {
-                        weatherCell.textContent = `${weatherData.current.temp_f} °F — ${weatherData.current.condition.text}`;
+                        weatherCell.textContent =
+                            `${weatherData.temperature} °F — ${weatherData.condition}`;
                     })
-                    .catch(err => {
-                        weatherCell.textContent = `Weather unavailable: ${err.message}`;
+                    .catch(error => {
+                        weatherCell.textContent = `Weather unavailable: ${error.message}`;
                     });
+
                 jobs.push(job);
             }
 
             return Promise.all(jobs).then(() => {
                 status.innerText = `${count} facilities displayed. Weather checks finished.${usingSavedData ? ' Using the saved NASA archive because the live request failed.' : ''}`;
             });
-        })
+            })
         .catch(err => {
             status.innerText = err.message;
         })
